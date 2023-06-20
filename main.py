@@ -16,6 +16,21 @@ symbol_count = {
 
 }
 
+def check_winnings(columns, lines, bet, values):
+    winnings = 0
+    winning_lines = []
+    for line in range(lines):
+        symbol = columns[0][line]
+        for column in columns:
+            symbol_check = column[line]
+            if symbol != symbol_check:
+                break
+        else:                                            #when the for loop for column does not break, the else function works
+            winnings += values[symbol] * bet
+            winning_lines.append(line + 1)
+
+    return winnings, winning_lines
+
 #generate items in slot machine
 
 def slot_machine_spin(rows, cols, symbols):
@@ -102,4 +117,7 @@ def main():
 
     slots = slot_machine_spin(ROWS, COLS, symbol_count)
     print_slot_machine(slots)
+    winnings, winning_lines = check_winnings(slots, total_lines, bet, symbol_count)
+    print(f"The amount you have won is ${winnings} for lines ", *winning_lines)
+
 main()
