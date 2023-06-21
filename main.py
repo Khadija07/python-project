@@ -101,23 +101,41 @@ def bet_amount():
             print("please enter a valid number.")
     return bet 
 
-def main():
-    balance_amount = deposit()
-    total_lines = number_of_lines()
-    while True:
+def game(balance):
+     
+     total_lines = number_of_lines()
+     while True:
         bet = bet_amount()
         total_bet = bet * total_lines
-        if total_bet > balance_amount:
-            print(f"Your amount is greater than your balance of ${balance_amount}")
+        if total_bet > balance:
+            print(f"Your amount is greater than your balance of ${balance}")
         else:
             break
 
     
-    print(f"your total bet for ${bet} on {total_lines} lines is ${total_bet}.")
+     print(f"your total bet for ${bet} on {total_lines} lines is ${total_bet}.")
 
-    slots = slot_machine_spin(ROWS, COLS, symbol_count)
-    print_slot_machine(slots)
-    winnings, winning_lines = check_winnings(slots, total_lines, bet, symbol_count)
-    print(f"The amount you have won is ${winnings} for lines ", *winning_lines)
+     slots = slot_machine_spin(ROWS, COLS, symbol_count)
+     print_slot_machine(slots)
+     winnings, winning_lines = check_winnings(slots, total_lines, bet, symbol_count)
+     print(f"The amount you have won is ${winnings} for lines ", *winning_lines)
 
+     return winnings - total_bet
+    
+
+
+
+def main():
+    balance_amount = deposit()
+    while True:
+        print(f"your current balance is ${balance_amount}")
+        spin = input("Enter q to quit ")
+        if spin == "q":
+            break
+        if balance_amount == 0:
+            balance_amount = deposit()
+        balance_amount += game(balance_amount)  #update value of spin
+
+    print(f"you have ${balance_amount} as your balance.")
+   
 main()
